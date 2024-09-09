@@ -57,6 +57,7 @@ jobs:
           ACTIONS_RUNTIME_TOKEN: ''
         with:
           context: .
+          dockerfile: ./Dockerfile.sim
 
           platforms: linux/amd64
 
