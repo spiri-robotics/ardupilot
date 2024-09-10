@@ -8,7 +8,7 @@ USER ardupilot
 SHELL ["/bin/bash", "-c"]
 
 COPY --chown=ardupilot ./ /ardupilot
-WORKDIR /app/
+WORKDIR /ardupilot
 
 RUN ./waf configure --board sitl
 RUN ./waf copter
