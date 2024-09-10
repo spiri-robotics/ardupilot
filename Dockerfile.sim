@@ -7,7 +7,7 @@ USER ardupilot
 # A lot of env vars are set, it's easier to just use a custom shell
 SHELL ["/bin/bash", "-c"]
 
-COPY --chown=ardupilot ./ /app 
+COPY --chown=ardupilot ./ /ardupilot
 WORKDIR /app/
 
 RUN ./waf configure --board sitl
