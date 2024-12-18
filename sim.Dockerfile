@@ -11,5 +11,5 @@ COPY --chown=ardupilot ./ /ardupilot
 WORKDIR /ardupilot
 
 RUN ./waf configure --board sitl
-RUN ./waf copter
+RUN ./waf
 
