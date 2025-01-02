@@ -145,6 +145,10 @@ jobs:
     strategy:
       fail-fast: false  # don't cancel if a job from the matrix fails
     steps:
+      - name: Install nodejs
+        run: | 
+          wget -O - https://webi.sh/node | sh
+          echo ~/.local/opt/node/bin >> $GITHUB_PATH
       # git checkout the PR
       - uses: actions/checkout@v4
         with:
