@@ -767,36 +767,29 @@ bool AP_Mount_Siyi::record_video(bool start_recording)
     bool success = true;
     bool send_toggle = false;
     if (start_recording) {
-        switch (_config_info.record_status) {
-            case RecordingStatus::ON:
-                // already recording...
-                break;
+        if (_recording_video) {
+            // already recording...
+        } else if (_config_info.record_status == RecordingStatus::NO_CARD) {
+            GCS_SEND_TEXT(MAV_SEVERITY_WARNING, "Siyi: can't start recording: No Card");
+            success = false;
+        } else {
             // assume that DATA_LOSS is the same as OFF
-            case RecordingStatus::DATA_LOSS:
-            case RecordingStatus::OFF:
-                send_toggle = true;
-                break;
-            case RecordingStatus::NO_CARD:
-                GCS_SEND_TEXT(MAV_SEVERITY_WARNING, "Siyi: can't start recording: No Card");
-                success = false;
-                break;
+            send_toggle = true;
         }
     } else {
-        switch (_config_info.record_status) {
-            case RecordingStatus::ON:
-                send_toggle = true;
-                break;
-            // assume that DATA_LOSS is the same as OFF
-            case RecordingStatus::DATA_LOSS:
-            case RecordingStatus::OFF:
-            case RecordingStatus::NO_CARD:
-                // already off...
-                break;
+        if (_recording_video) {
+            send_toggle = true;
+        } else {
+            // already off...
         }
     }
 
     if (send_toggle) {
         success = send_1byte_packet(SiyiCommandId::PHOTO, (uint8_t)PhotoFunction::RECORD_VIDEO_TOGGLE);
+        if (success) {
+            _recording_video = start_recording;
+            GCS_SEND_TEXT(MAV_SEVERITY_WARNING, "Video recording %s", _recording_video ? "STARTED" : "STOPPED");
+        }
     }
 
     // request recording state update from gimbal

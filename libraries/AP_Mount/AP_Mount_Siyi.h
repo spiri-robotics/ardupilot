@@ -348,6 +348,7 @@ private:
 
     // Configuration info received from gimbal
     GimbalConfigInfo _config_info;
+    bool _recording_video = false;                  // last known recording state (local)
     
     // rangefinder variables
     uint32_t _last_rangefinder_req_ms;              // system time of last request for rangefinder distance
